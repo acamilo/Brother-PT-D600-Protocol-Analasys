@@ -17,6 +17,7 @@
 
 ## Command List ##
 | Command | Decode |
+| --- | --- |
 | `1B 40` | Init Command CR P.18|
 | `1B 69 53` | Status Information Reqest CR P.18 |
 | device sends status info | |
