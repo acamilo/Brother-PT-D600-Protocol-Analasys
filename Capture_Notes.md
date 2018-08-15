@@ -15,7 +15,7 @@
  - [libptouch](https://bitbucket.org/philpem/libptouch)
 
 
-## Command List ##
+## Command Log ##
 | pcap packet| Command | Decode |
 | --- | --- | --- |
 | 2 | `1B 40` | Init Command CR P.18|
