@@ -32,8 +32,9 @@ while len(strbytes) != 0:
 
 print len(graphic)
 for s in graphic:
-  print len(s)
+  li = ""
   for b in s:
     it = int("0x%s"%b , 0)
     binstr = format(it, '08b')
-    print binstr,
+    li =li + binstr
+  print li.strip().replace('0',' ').replace('1',chr(219))
