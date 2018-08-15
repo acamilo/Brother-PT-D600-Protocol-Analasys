@@ -17,7 +17,6 @@
 
 ## Command List ##
 | pcap packet| Command | Decode |
-
 | --- | --- | --- |
 | 2 | `1B 40` | Init Command CR P.18|
 | 3 | `1B 69 53` | Status Information Reqest CR P.18 |
