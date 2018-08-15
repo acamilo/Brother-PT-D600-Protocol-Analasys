@@ -16,14 +16,19 @@
 
 
 ## Command List ##
-| Command | Decode |
-| --- | --- |
-| `1B 40` | Init Command CR P.18|
-| `1B 69 53` | Status Information Reqest CR P.18 |
-| device sends status info | |
-| `1B 69 61 01` | specify Raster Mode `01` CR P.18 |
-| `1B 69 55 .. 17 bytes` | Unknown Command |
-| `1B 69 7a .. 12 bytes` | Unknown Command |
-| `1B 69 4d 40` | Unknown Command |
-| `1B 69 4b 08` | Unknown Command |
-| `1B 69 64 .. 2724 bytes` | Unknown Command |
+| pcap packet| Command | Decode |
+
+| --- | --- | --- |
+| 2 | `1B 40` | Init Command CR P.18|
+| 3 | `1B 69 53` | Status Information Reqest CR P.18 |
+| 15 | device sends status info | |
+| 16 | `1B 69 61 01` | specify Raster Mode `01` CR P.18 |
+| 16 | `1B 69 55 .. 17 bytes` | Unknown Command |
+| 16 | `1B 69 7a .. 12 bytes` | Unknown Command |
+| 16 | `1B 69 4d 40` | Unknown Command |
+| 16 | `1B 69 4b 08` | Unknown Command |
+| 16 | `1B 69 64 .. 2724 bytes` | Unknown Command |
+| 25 | 32b response | |
+| 27739 | 32b response | |
+| 5290 | 32b response | |
+| 5291 | 32b response | |
