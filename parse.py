@@ -18,7 +18,7 @@ while len(strbytes) != 0:
       if len(strbytes)>0 and strbytes[0] != '1b':
         b = strbytes.pop(0)
         if b=='47':
-          graphic += [strbytes[0:17]]
+          graphic += [strbytes[0:18]]
               
         if c<10:
           print " %s" % b ,
@@ -30,7 +30,11 @@ while len(strbytes) != 0:
           print " .. #%d )" % c 
         break
 
-print len(graphic)
+        
+#for s in graphic:
+#  print s,
+#  print "(%d %s)"%(len(s),hex(len(s)))
+print "%d lines of image found"%len(graphic)
 for s in graphic:
   li = ""
   for b in s:
