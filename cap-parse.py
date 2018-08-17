@@ -65,9 +65,12 @@ with open(sys.argv[1]) as fp:
   scanner = FileScanner(fp)
   for block in scanner:
     try:
-      block = bytearray(block.packet_data)
+      blockb = bytearray(block.packet_data)
+      if len(blockb[27:])>0:
+        print block
+
       #strip off USB stuff
-      stream += block[27:]
+      stream += blockb[27:]
     except AttributeError:
       pass 
 
@@ -77,11 +80,12 @@ with open(sys.argv[1]) as fp:
   commands = parse(stream)
 
   for c in commands:
-    print c[0:40],
-    if len(c)>40:
-      print "..(%d)" % len(c)
-    else:
-      print ""
+    for ch in c:
+      print hex(ch),
+    #if len(c)>40:
+    #  print "..(%d)" % len(c)
+    #else:
+    print ""
     if c[0:3] == [27, 105, 100]:
       print "Found Bitmap Data"
       pixels = extractPicture(c)
