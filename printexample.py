@@ -2,6 +2,9 @@ import usb.core
 import usb.util
 import time
 import struct
+import sys
+from PIL import Image
+
 
 class d600Printer():
   dev     = None
@@ -66,7 +69,7 @@ class d600Printer():
 
   # 0x1b 0x69 0x7a 0x0 0x0 0xc 0x0 0x8f 0x0 0x0 0x0 0x0 0x0 
   def command_set_print_information(self, paperwidth,paperlength,rasternumber, validflag = 0x00,papertype = 0x00, startingpage = 0x00):
-    print rasternumber
+    #print rasternumber
     cmd = struct.pack("=BBBBBBBIBB",0x1b, 0x69, 0x7a, validflag, papertype, paperwidth, paperlength, rasternumber,startingpage,0x00)
     phex (cmd)
     self.bulkout.write(cmd)
@@ -102,7 +105,7 @@ class d600Printer():
     self.command_null()
     self.command_init()
     data = self.command_request_status_info()
-    print(data)
+    #print(data)
     self.command_switch_mode(0x01)
     self.command_set_print_information(paperwidth = 24,paperlength = 0, rasternumber = len(image) )
     self.bulkout.write([0x1b, 0x69 ,0x55, 0x4a, 0x0, 0xc, 0x0, 0x10, 0x18, 0x5c, 0x9d, 0x55, 0x0 ,0x0 ,0xb ,0x0 ,0x0 ,0x0])
@@ -111,8 +114,11 @@ class d600Printer():
     self.bulkout.write([0x1B ,0x69 ,0x64 ,0x0E ,0x00])
     self.command_send_graphics(image)
 
+  
+
 
 def phex(d):
+  return
   for c in d:
     try:
       print hex(c),
@@ -120,11 +126,31 @@ def phex(d):
       print hex(ord(c)),
   print
 
+
+img = Image.open( sys.argv[1] )
+px = img.load()
+
+
+if img.size[1] != 128:
+  print("image size of '%d' is not 128"%img.size[1])
+
+im=[]
+for y in range(img.size[0]):
+  line = [0]*16
+  for x in range(128):
+    bit  = x%8
+    mask = 0x80>>bit
+    byte = x/8
+    if px[y,x]==0:
+      line[byte] |= mask
+  im += [line]
+
 p = d600Printer()
-ln = [[0xaa]*16,[0x55]*16]
-im = ln*128 
-print im
-p.printimage(im)
+
+#print 
+#for line in im:
+#  print line
+#p.printimage(im)
 
 
 
