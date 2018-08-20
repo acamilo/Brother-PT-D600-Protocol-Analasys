@@ -60,7 +60,7 @@ class d600Printer():
     phex(cmd)
     self.bulkout.write(cmd)
     time.sleep(0.1)
-    return self.bulkin.read(32,100)
+    return self.bulkin.read(32,5000)
 
   def command_switch_mode(self,mode = 0x01):
     cmd = struct.pack("BBBB",0x1b,0x69,0x61, mode )
@@ -118,7 +118,6 @@ class d600Printer():
 
 
 def phex(d):
-  return
   for c in d:
     try:
       print hex(c),
@@ -128,29 +127,39 @@ def phex(d):
 
 
 img = Image.open( sys.argv[1] )
+img = img.convert('1')
 px = img.load()
 
 
-if img.size[1] != 128:
-  print("image size of '%d' is not 128"%img.size[1])
+if (img.size[1] != 128) and (img.size[1] != 64):
+  print("image size of '%d' is not 128 or 64"%img.size[1])
 
 im=[]
 for y in range(img.size[0]):
   line = [0]*16
-  for x in range(128):
-    bit  = x%8
-    mask = 0x80>>bit
-    byte = x/8
-    if px[y,x]==0:
-      line[byte] |= mask
+  if img.size[1] == 64:
+    for x in range(32,96):
+      bit  = x%8
+      mask = 0x80>>bit
+      byte = x/8
+      if px[y,x-32]==0:
+        line[byte] |= mask
+  else:
+    for x in range(128):
+      bit  = x%8
+      mask = 0x80>>bit
+      byte = x/8
+      if px[y,x]==0:
+        line[byte] |= mask
   im += [line]
 
 p = d600Printer()
 
+#convert -size x64 -font Clear-Sans-Bold label:"A quick brown fox jumped over a lazy dog\nA quick brown fox jumped over a lazy dog" +dither -monochrome fox-64.bmp
 #print 
 #for line in im:
 #  print line
-#p.printimage(im)
+p.printimage(im)
 
 
 
